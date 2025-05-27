@@ -1,776 +1,1116 @@
-<!doctype html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eid Saeed - Interactive Greeting Card</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-      :root {
-        --primary-color: #ffd700;
-        --secondary-color: #36a3eb;
-        --accent-color: #ff7e5f;
-        --dark-color: #0a192f;
-        --darker-color: #061023;
-        --light-color: #f5f5f5;
-        --signature-color: #64dfdf;
-        
-        font-family: 'Montserrat', 'Cairo', sans-serif;
-        line-height: 1.5;
-        font-weight: 400;
-        color: var(--light-color);
-        background-color: var(--dark-color);
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عيد أضحى مبارك</title>
+  <!-- Google Fonts - Arabic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Reem+Kufi:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Color system */
+      --primary-50: #f0fdfa;
+      --primary-100: #ccfbf1;
+      --primary-200: #99f6e4;
+      --primary-300: #5eead4;
+      --primary-400: #2dd4bf;
+      --primary-500: #14b8a6;
+      --primary-600: #0d9488;
+      --primary-700: #0f766e;
+      --primary-800: #115e59;
+      --primary-900: #134e4a;
+      
+      --secondary-50: #fef2f2;
+      --secondary-100: #fee2e2;
+      --secondary-200: #fecaca;
+      --secondary-300: #fca5a5;
+      --secondary-400: #f87171;
+      --secondary-500: #ef4444;
+      --secondary-600: #dc2626;
+      --secondary-700: #b91c1c;
+      --secondary-800: #991b1b;
+      --secondary-900: #7f1d1d;
+      
+      --accent-50: #fffbeb;
+      --accent-100: #fef3c7;
+      --accent-200: #fde68a;
+      --accent-300: #fcd34d;
+      --accent-400: #fbbf24;
+      --accent-500: #f59e0b;
+      --accent-600: #d97706;
+      --accent-700: #b45309;
+      --accent-800: #92400e;
+      --accent-900: #78350f;
+      
+      --neutral-50: #f8fafc;
+      --neutral-100: #f1f5f9;
+      --neutral-200: #e2e8f0;
+      --neutral-300: #cbd5e1;
+      --neutral-400: #94a3b8;
+      --neutral-500: #64748b;
+      --neutral-600: #475569;
+      --neutral-700: #334155;
+      --neutral-800: #1e293b;
+      --neutral-900: #0f172a;
+      
+      /* Spacing system - base 8px */
+      --space-1: 8px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --space-4: 32px;
+      --space-5: 40px;
+      --space-6: 48px;
+      --space-7: 56px;
+      --space-8: 64px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      font-family: 'Reem Kufi', 'Amiri', sans-serif;
+      background-color: var(--primary-50);
+      color: var(--neutral-800);
+      line-height: 1.5;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-2);
+      position: relative;
+    }
+    
+    /* First view - Greeting with Heart */
+    #greeting-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 100vh;
+      width: 100%;
+      max-width: 600px;
+      padding: var(--space-3);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      z-index: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+    }
+    
+    h1 {
+      font-family: 'Aref Ruqaa', serif;
+      font-size: 2.5rem;
+      margin-bottom: var(--space-4);
+      color: var(--primary-800);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      line-height: 1.2;
+    }
+    
+    .heart-container {
+      position: relative;
+      cursor: pointer;
+      margin: var(--space-4) auto;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .heart {
+      width: 80px;
+      height: 80px;
+      background-color: var(--secondary-500);
+      position: relative;
+      transform: rotate(45deg);
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+    
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 80px;
+      height: 80px;
+      background-color: var(--secondary-500);
+      border-radius: 50%;
+      position: absolute;
+    }
+    
+    .heart::before {
+      top: -40px;
+      left: 0;
+    }
+    
+    .heart::after {
+      top: 0;
+      left: -40px;
+    }
+    
+    .heart-glow {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.4) 0%, rgba(239, 68, 68, 0) 70%);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite alternate;
+      z-index: -1;
+      transform: scale(1.2);
+    }
+    
+    @keyframes heartbeat {
+      0% {
+        transform: rotate(45deg) scale(1);
       }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      14% {
+        transform: rotate(45deg) scale(1.1);
       }
-
-      body {
-        margin: 0;
-        overflow: hidden;
-        min-width: 320px;
-        min-height: 100vh;
-        background: linear-gradient(135deg, var(--darker-color) 0%, var(--dark-color) 75%);
+      28% {
+        transform: rotate(45deg) scale(1);
       }
-
-      #app {
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
+      42% {
+        transform: rotate(45deg) scale(1.1);
       }
-
-      .heart-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 10;
-        cursor: pointer;
+      70% {
+        transform: rotate(45deg) scale(1);
       }
-
-      .heart {
-        position: relative;
-        width: min(80vw, 80vh);
-        height: min(80vw, 80vh);
-        animation: pulse 1.8s ease-in-out infinite;
-        filter: drop-shadow(0 0 20px rgba(255, 100, 100, 0.3));
+      100% {
+        transform: rotate(45deg) scale(1);
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        opacity: 0.4;
+        transform: scale(1.2);
+      }
+      100% {
+        opacity: 0.8;
+        transform: scale(1.5);
+      }
+    }
+    
+    /* Second view - Surprise with Celebration */
+    #surprise-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 100vh;
+      width: 100%;
+      padding: var(--space-3);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
+      opacity: 0;
+      transition: opacity 1s ease;
+      overflow: hidden;
+    }
+    
+    .celebration-message {
+      position: relative;
+      z-index: 2;
+      padding: var(--space-4);
+      background-color: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border-radius: var(--space-2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      margin: 0 auto;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .eid-heading {
+      font-family: 'Aref Ruqaa', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--accent-300);
+      margin-bottom: var(--space-2);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      line-height: 1.2;
+    }
+    
+    .person-name {
+      font-family: 'Amiri', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: var(--space-4);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .eid-quote {
+      font-family: 'Reem Kufi', sans-serif;
+      font-size: 1.25rem;
+      color: var(--neutral-100);
+      margin-bottom: var(--space-4);
+      line-height: 1.6;
+    }
+    
+    .credit {
+      font-family: 'Reem Kufi', sans-serif;
+      font-size: 1rem;
+      color: var(--accent-100);
+      opacity: 0.9;
+      margin-top: var(--space-2);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    /* Decorative elements */
+    .lanterns {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.7;
+    }
+    
+    .lantern {
+      position: absolute;
+      width: 40px;
+      height: 60px;
+      background-color: var(--accent-400);
+      border-radius: 20px;
+      animation: sway 5s ease-in-out infinite alternate;
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.7);
+    }
+    
+    .lantern::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent-600);
+      border-radius: 50%;
+    }
+    
+    .lantern::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 15px;
+      width: 10px;
+      height: 5px;
+      background-color: var(--accent-600);
+      border-radius: 50%;
+    }
+    
+    .lantern:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      animation-delay: 0.5s;
+      background-color: var(--accent-500);
+    }
+    
+    .lantern:nth-child(2) {
+      top: 15%;
+      right: 15%;
+      animation-delay: 1s;
+      background-color: var(--secondary-500);
+    }
+    
+    .lantern:nth-child(3) {
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 1.5s;
+      background-color: var(--primary-500);
+    }
+    
+    .lantern:nth-child(4) {
+      bottom: 25%;
+      right: 10%;
+      animation-delay: 2s;
+      background-color: var(--accent-600);
+    }
+    
+    @keyframes sway {
+      0% {
+        transform: translateY(0) rotate(5deg);
+      }
+      100% {
+        transform: translateY(10px) rotate(-5deg);
+      }
+    }
+    
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .star {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background-color: white;
+      border-radius: 50%;
+      animation: twinkle 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes twinkle {
+      0% {
+        opacity: 0.2;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1.5);
+      }
+    }
+    
+    .crescent {
+      position: absolute;
+      top: 50px;
+      right: 50px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      box-shadow: 15px 15px 0 0 var(--accent-300);
+      transform: rotate(-20deg);
+      z-index: 0;
+      opacity: 0.8;
+    }
+    
+    /* Fireworks animation */
+    .fireworks {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .firework {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      animation: explode 2s ease-out forwards;
+      opacity: 0;
+    }
+    
+    @keyframes explode {
+      0% {
+        transform: translateY(100vh);
         opacity: 0;
-        transform: scale(0.5);
-        animation: assemble 1.5s ease-out forwards, pulse 1.8s ease-in-out infinite 1.5s;
-        display: flex;
-        justify-content: center;
-        align-items: center;
       }
-
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(20vh) scale(0);
+        opacity: 0;
+      }
+    }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      animation: fly 1s ease-out forwards;
+      opacity: 0;
+    }
+    
+    @keyframes fly {
+      0% {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--x), var(--y));
+        opacity: 0;
+      }
+    }
+    
+    /* Audio control */
+    .audio-control {
+      position: absolute;
+      bottom: var(--space-2);
+      right: var(--space-2);
+      z-index: 10;
+      background-color: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .audio-control:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+    
+    .audio-icon {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+    
+    /* Walking Sheep Styles */
+    .sheep-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 150px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    .sheep {
+      position: absolute;
+      bottom: 20px;
+      width: 80px;
+      height: 60px;
+      background-color: white;
+      border-radius: 40px 40px 0 0;
+      animation: walk-right-to-left linear forwards;
+    }
+    
+    .sheep-head {
+      position: absolute;
+      width: 30px;
+      height: 35px;
+      background-color: #3f3f3f;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      top: -15px;
+      right: 10px;
+    }
+    
+    .sheep-ear {
+      position: absolute;
+      width: 10px;
+      height: 15px;
+      background-color: #3f3f3f;
+      border-radius: 50%;
+    }
+    
+    .sheep-ear-left {
+      top: -5px;
+      left: 2px;
+      transform: rotate(-30deg);
+    }
+    
+    .sheep-ear-right {
+      top: -5px;
+      right: 2px;
+      transform: rotate(30deg);
+    }
+    
+    .sheep-eye {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background-color: white;
+      border-radius: 50%;
+      top: 12px;
+    }
+    
+    .sheep-eye-left {
+      left: 7px;
+    }
+    
+    .sheep-eye-right {
+      right: 7px;
+    }
+    
+    .sheep-leg {
+      position: absolute;
+      width: 10px;
+      height: 25px;
+      background-color: #3f3f3f;
+      bottom: -20px;
+      border-radius: 5px;
+    }
+    
+    .sheep-leg-front-left {
+      left: 15px;
+      animation: walk-front-leg 1s infinite;
+    }
+    
+    .sheep-leg-front-right {
+      left: 30px;
+      animation: walk-front-leg 1s infinite 0.5s;
+    }
+    
+    .sheep-leg-back-left {
+      right: 30px;
+      animation: walk-back-leg 1s infinite 0.5s;
+    }
+    
+    .sheep-leg-back-right {
+      right: 15px;
+      animation: walk-back-leg 1s infinite;
+    }
+    
+    @keyframes walk-right-to-left {
+      0% {
+        transform: translateX(100vw);
+      }
+      100% {
+        transform: translateX(-150px);
+      }
+    }
+    
+    @keyframes walk-front-leg {
+      0%, 100% {
+        transform: translateX(0) rotate(0deg);
+      }
+      25% {
+        transform: translateX(3px) rotate(20deg);
+      }
+      50% {
+        transform: translateX(0) rotate(0deg);
+      }
+      75% {
+        transform: translateX(-3px) rotate(-20deg);
+      }
+    }
+    
+    @keyframes walk-back-leg {
+      0%, 100% {
+        transform: translateX(0) rotate(0deg);
+      }
+      25% {
+        transform: translateX(-3px) rotate(-20deg);
+      }
+      50% {
+        transform: translateX(0) rotate(0deg);
+      }
+      75% {
+        transform: translateX(3px) rotate(20deg);
+      }
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .eid-heading {
+        font-size: 2.25rem;
+      }
+      
+      .person-name {
+        font-size: 2rem;
+      }
+      
+      .heart {
+        width: 60px;
+        height: 60px;
+      }
+      
       .heart::before,
       .heart::after {
-        content: '';
-        position: absolute;
-        width: 50%;
-        height: 80%;
-        background: transparent;
-        border: 3px solid;
-        border-image: linear-gradient(135deg, #ff7e5f, #feb47b) 1;
-        border-radius: 50% 50% 0 0;
-        box-shadow: 
-          0 0 15px rgba(255, 100, 50, 0.8),
-          inset 0 0 10px rgba(255, 100, 50, 0.5);
-        filter: brightness(1.2) contrast(1.2);
-        transition: all 0.5s ease;
+        width: 60px;
+        height: 60px;
       }
-
-      .heart:hover::before,
-      .heart:hover::after {
-        filter: brightness(1.5) contrast(1.5);
-        box-shadow: 
-          0 0 25px rgba(255, 100, 50, 0.9),
-          inset 0 0 15px rgba(255, 100, 50, 0.8);
-      }
-
+      
       .heart::before {
-        left: 50%;
-        transform: rotate(-45deg);
-        transform-origin: 0 100%;
+        top: -30px;
       }
-
+      
       .heart::after {
-        left: 0;
-        transform: rotate(45deg);
-        transform-origin: 100% 100%;
+        left: -30px;
       }
-
-      .click-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: clamp(20px, 5vw, 36px);
-        font-weight: 700;
-        z-index: 11;
-        text-align: center;
-        pointer-events: none;
-        text-shadow: 0 0 10px rgba(255, 126, 95, 1), 
-                     0 0 20px rgba(255, 215, 0, 0.8);
-        font-family: 'Cairo', sans-serif;
-        opacity: 0;
-        animation: fadeIn 1s ease-out 2s forwards, 
-                   glow 2s ease-in-out infinite alternate 2s;
+      
+      .heart-container {
+        width: 100px;
+        height: 100px;
       }
-
-      @keyframes glow {
-        from { text-shadow: 0 0 10px rgba(255, 126, 95, 0.8), 0 0 20px rgba(255, 215, 0, 0.5); }
-        to { text-shadow: 0 0 15px rgba(255, 126, 95, 1), 0 0 30px rgba(255, 215, 0, 0.8); }
+      
+      .heart-glow {
+        width: 100px;
+        height: 100px;
       }
-
-      @keyframes assemble {
-        0% {
-          opacity: 0;
-          transform: scale(0.5) rotate(180deg);
-        }
-        50% {
-          opacity: 0.5;
-          transform: scale(1.2) rotate(-20deg);
-        }
-        100% {
-          opacity: 1;
-          transform: scale(1) rotate(0);
-        }
+      
+      .lantern {
+        width: 30px;
+        height: 45px;
       }
-
-      .fade-out {
-        animation: fadeOut 1.5s forwards cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      
+      .crescent {
+        width: 60px;
+        height: 60px;
+        top: 30px;
+        right: 30px;
       }
-
-      .scale-out {
-        animation: scaleOut 1.5s forwards cubic-bezier(0.68, -0.55, 0.27, 1.55);
-      }
-
-      @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-      }
-
-      @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-      }
-
-      @keyframes scaleOut {
-        0% { 
-          transform: scale(1); 
-          opacity: 1;
-        }
-        50% { 
-          transform: scale(1.5); 
-          opacity: 0.5;
-        }
-        100% { 
-          transform: scale(2); 
-          opacity: 0;
-        }
-      }
-
-      .fireworks-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        pointer-events: none;
-        display: none;
-      }
-
-      .greeting-container {
-        z-index: 2;
-        text-align: center;
-        position: relative;
-        display: none;
-        padding: 3rem;
-        background: rgba(10, 25, 47, 0.7);
-        backdrop-filter: blur(10px);
-        border-radius: 30px;
-        border: 2px solid rgba(255, 215, 0, 0.3);
-        box-shadow: 
-          0 25px 45px rgba(0, 0, 0, 0.2),
-          0 0 20px rgba(255, 215, 0, 0.2);
-        max-width: 90%;
-        transform: translateY(30px);
-        opacity: 0;
-        animation: slideUpFade 1.5s ease-out forwards;
-      }
-
-      @keyframes slideUpFade {
-        0% {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .greeting {
-        font-family: 'Cairo', serif;
-        font-size: clamp(3rem, 10vw, 5rem);
-        font-weight: 900;
-        background: linear-gradient(45deg, var(--primary-color), #ff9a3c);
-        background-size: 400% 400%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-shadow: 2px 2px 20px rgba(255, 215, 0, 0.5);
-        margin-bottom: 1.5rem;
-        letter-spacing: 0.05em;
-        animation: shimmer 3s ease-in-out infinite;
-      }
-
-      @keyframes shimmer {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
-      }
-
-      .name {
-        font-family: 'Cairo', sans-serif;
-        font-size: clamp(2rem, 8vw, 3.8rem);
-        font-weight: 700;
-        background: linear-gradient(45deg, var(--secondary-color), #64dfdf);
-        background-size: 400% 400%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-shadow: 0 0 15px rgba(54, 163, 235, 0.5);
-        margin-bottom: 1.5rem;
-        opacity: 0;
-        animation: fadeIn 1s ease-out 0.5s forwards, 
-                   shimmer 4s ease-in-out infinite 0.5s;
-      }
-
-      .subtext {
-        font-size: clamp(1rem, 3vw, 1.2rem);
-        color: var(--light-color);
-        opacity: 0;
-        animation: fadeIn 2s ease-in-out 1s forwards;
-        max-width: 600px;
-        margin: 0 auto 1.5rem;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-      }
-
-      .signature {
-        font-family: 'Cairo', sans-serif;
-        font-size: clamp(1.1rem, 3vw, 1.5rem);
-        font-weight: 700;
-        color: var(--signature-color);
-        opacity: 0;
-        animation: fadeIn 2s ease-in-out 1.5s forwards;
-        text-shadow: 0 0 5px rgba(100, 223, 223, 0.7);
-        margin-top: 1.5rem;
-        display: inline-block;
-        position: relative;
-      }
-
-      .signature::after {
-        content: '';
-        position: absolute;
-        width: 50%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, var(--signature-color), transparent);
-        bottom: -5px;
-        left: 25%;
-        animation: glowLine 2s ease-in-out infinite alternate;
-      }
-
-      @keyframes glowLine {
-        0% { opacity: 0.5; width: 30%; left: 35%; }
-        100% { opacity: 1; width: 70%; left: 15%; }
-      }
-
-      .particles {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        display: none;
-      }
-
-      .balloons-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        display: none;
-        pointer-events: none;
-      }
-
-      @keyframes fadeIn {
-        0% {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .stars {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-      }
-
-      .balloon {
-        position: absolute;
-        width: 50px;
-        height: 65px;
-        border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-        box-shadow: inset -10px -10px 10px rgba(0, 0, 0, 0.1);
-        animation: float 15s linear infinite;
-        bottom: -100px;
-      }
-
-      .balloon::before {
-        content: '';
-        position: absolute;
-        width: 2px;
+      
+      .sheep {
+        width: 70px;
         height: 50px;
-        background: rgba(255, 255, 255, 0.7);
-        top: 65px;
-        left: 25px;
       }
-
-      .balloon::after {
-        content: '';
-        position: absolute;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-bottom: 10px solid;
-        top: 64px;
-        left: 20px;
-      }
-
-      @keyframes float {
-        0% {
-          transform: translateY(0) translateX(0) rotate(0deg);
-          opacity: 1;
-        }
-        25% {
-          transform: translateY(-25vh) translateX(10vw) rotate(5deg);
-        }
-        50% {
-          transform: translateY(-50vh) translateX(-5vw) rotate(-5deg);
-        }
-        75% {
-          transform: translateY(-75vh) translateX(10vw) rotate(5deg);
-        }
-        100% {
-          transform: translateY(-100vh) translateX(0) rotate(0deg);
-          opacity: 0;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .greeting-container {
-          padding: 2rem;
-        }
-        
-        .heart {
-          width: min(90vw, 90vh);
-          height: min(90vw, 90vh);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="app">
-      <div class="stars"></div>
       
-      <div class="heart-container" id="heartContainer">
-        <div class="heart" id="heart">
-          <div class="click-text">اضغط هنا</div>
-        </div>
-      </div>
+      .sheep-head {
+        width: 25px;
+        height: 30px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.75rem;
+      }
       
-      <div class="fireworks-container"></div>
-      <div class="balloons-container"></div>
-      <div class="greeting-container">
-        <h1 class="greeting">Eid Saeed</h1>
-        <h2 class="name">MaNonA</h2>
-        <p class="subtext">Wishing you joy, peace, and prosperity on this blessed occasion</p>
-        <div class="signature">From: Muhammad</div>
-      </div>
-      <div class="particles"></div>
+      .eid-heading {
+        font-size: 1.75rem;
+      }
       
-      <audio id="introAudio" loop>
-        <source src="./videoplayback.webm" type="audio/webm">
-      </audio>
+      .person-name {
+        font-size: 1.5rem;
+      }
+      
+      .eid-quote {
+        font-size: 1rem;
+      }
+      
+      .celebration-message {
+        padding: var(--space-2);
+      }
+      
+      .heart {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .heart::before,
+      .heart::after {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .heart::before {
+        top: -25px;
+      }
+      
+      .heart::after {
+        left: -25px;
+      }
+      
+      .heart-container {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .heart-glow {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .sheep {
+        width: 60px;
+        height: 45px;
+      }
+      
+      .sheep-head {
+        width: 22px;
+        height: 26px;
+      }
+      
+      .sheep-ear {
+        width: 8px;
+        height: 12px;
+      }
+      
+      .sheep-leg {
+        width: 8px;
+        height: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Greeting View -->
+  <div id="greeting-view">
+    <h1>اضغط على القلب علشان تشوف مفاجأتي ليك ❤️</h1>
+    
+    <div class="heart-container" id="heartButton">
+      <div class="heart"></div>
+      <div class="heart-glow"></div>
     </div>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const heart = document.getElementById('heart');
-        const heartContainer = document.getElementById('heartContainer');
-        const eidContent = document.querySelector('.greeting-container');
-        const fireworksContainer = document.querySelector('.fireworks-container');
-        const balloonsContainer = document.querySelector('.balloons-container');
-        const particlesContainer = document.querySelector('.particles');
-        const starsContainer = document.querySelector('.stars');
-        const audio = document.getElementById('introAudio');
-        
-        // Create initial star background
-        createStars(starsContainer);
-        
-        // Add fire effect to heart borders
-        addFireEffectToHeart();
-
-        // Add click event to heart
-        heartContainer.addEventListener('click', () => {
-          // Fancy transition for heart
-          heart.classList.add('scale-out');
-          heartContainer.classList.add('fade-out');
-          
-          // Try to play audio on user interaction (to comply with autoplay policies)
-          audio.play().catch(error => {
-            console.log('Audio playback prevented:', error);
-          });
-          
-          // After heart fades out, show Eid content
-          setTimeout(() => {
-            heartContainer.style.display = 'none';
-            eidContent.style.display = 'block';
-            fireworksContainer.style.display = 'block';
-            balloonsContainer.style.display = 'block';
-            particlesContainer.style.display = 'block';
-            
-            setupFireworks(fireworksContainer);
-            setupBalloons(balloonsContainer);
-            setupParticles(particlesContainer);
-          }, 1500);
-        });
-
-        // Add fire effect to heart outlines
-        function addFireEffectToHeart() {
-          // We'll create additional pseudo-elements for the fire effect with CSS
-          const style = document.createElement('style');
-          style.textContent = `
-            .heart::before, .heart::after {
-              animation: borderFlicker 4s ease-in-out infinite alternate;
-            }
-            
-            @keyframes borderFlicker {
-              0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                border-color: #ff7e5f;
-                box-shadow: 
-                  0 0 15px rgba(255, 100, 50, 0.8),
-                  inset 0 0 10px rgba(255, 100, 50, 0.5);
-              }
-              20%, 24%, 55% {
-                border-color: #ffd700;
-                box-shadow: 
-                  0 0 20px rgba(255, 215, 0, 0.8),
-                  inset 0 0 15px rgba(255, 215, 0, 0.5);
-              }
-            }
+  </div>
+  
+  <!-- Surprise View -->
+  <div id="surprise-view">
+    <!-- Decorative elements -->
+    <div class="lanterns">
+      <div class="lantern"></div>
+      <div class="lantern"></div>
+      <div class="lantern"></div>
+      <div class="lantern"></div>
+    </div>
+    
+    <div class="crescent"></div>
+    
+    <div class="stars"></div>
+    
+    <div class="fireworks" id="fireworks"></div>
+    
+    <!-- Walking Sheep Container -->
+    <div class="sheep-container" id="sheepContainer"></div>
+    
+    <div class="celebration-message">
+      <h2 class="eid-heading">عيد أضحى مبارك</h2>
+      <p class="person-name" id="personName">يا MaNonA</p>
+      <p class="eid-quote">تقبل الله منا ومنكم صالح الأعمال وكل عام وأنتم بخير</p>
+      <p class="credit">مع تحيات محمد ❤️</p>
+    </div>
+    
+    <div class="audio-control" id="audioControl">
+      <svg class="audio-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M14.016 3.234q3.047 0.656 5.016 3.117t1.969 5.648-1.969 5.648-5.016 3.117v-2.063q2.203-0.656 3.586-2.484t1.383-4.219-1.383-4.219-3.586-2.484v-2.063zM16.5 12q0 2.813-2.484 4.031v-8.063q2.484 1.219 2.484 4.031zM3 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6z"></path>
+      </svg>
+    </div>
+    
+    <audio id="eidMusic" loop>
+      <source src="./videoplayback.webm" type="audio/webm">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elements
+      const greetingView = document.getElementById('greeting-view');
+      const surpriseView = document.getElementById('surprise-view');
+      const heartButton = document.getElementById('heartButton');
+      const eidMusic = document.getElementById('eidMusic');
+      const audioControl = document.getElementById('audioControl');
+      const fireworksContainer = document.getElementById('fireworks');
+      const sheepContainer = document.getElementById('sheepContainer');
+      
+      // Audio control
+      let isMuted = false;
+      
+      audioControl.addEventListener('click', function() {
+        if (isMuted) {
+          eidMusic.play();
+          audioControl.innerHTML = `
+            <svg class="audio-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M14.016 3.234q3.047 0.656 5.016 3.117t1.969 5.648-1.969 5.648-5.016 3.117v-2.063q2.203-0.656 3.586-2.484t1.383-4.219-1.383-4.219-3.586-2.484v-2.063zM16.5 12q0 2.813-2.484 4.031v-8.063q2.484 1.219 2.484 4.031zM3 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6z"></path>
+            </svg>
           `;
-          document.head.appendChild(style);
-        }
-
-        // Create starry background
-        function createStars(container) {
-          for (let i = 0; i < 200; i++) {
-            const star = document.createElement('div');
-            star.style.position = 'absolute';
-            star.style.width = `${Math.random() * 2 + 1}px`;
-            star.style.height = star.style.width;
-            star.style.borderRadius = '50%';
-            
-            // Varied star colors
-            const colors = ['#ffffff', '#f8f8f8', '#ffe9c4', '#d4f1f9', '#fff6e0'];
-            star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            
-            star.style.top = `${Math.random() * 100}%`;
-            star.style.left = `${Math.random() * 100}%`;
-            
-            // Random opacity for depth effect
-            star.style.opacity = Math.random() * 0.8 + 0.2;
-            
-            // Twinkling animation
-            const duration = 3 + Math.random() * 4;
-            const delay = Math.random() * 5;
-            star.style.animation = `twinkle ${duration}s infinite alternate ${delay}s`;
-            
-            // Add to container
-            container.appendChild(star);
-          }
-          
-          // Add CSS for twinkling
-          const style = document.createElement('style');
-          style.textContent = `
-            @keyframes twinkle {
-              0% { opacity: 0.2; transform: scale(0.8); }
-              100% { opacity: 1; transform: scale(1); }
-            }
+          isMuted = false;
+        } else {
+          eidMusic.pause();
+          audioControl.innerHTML = `
+            <svg class="audio-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 3.984v4.219l-2.109-2.109zM4.266 3l16.734 16.734-1.266 1.266-2.063-2.063q-1.547 1.313-3.656 1.828v-2.063q1.172-0.328 2.063-1.172l-2.063-2.063v3.469l-5.016-5.016h-3.984v-6h4.734l-4.734-4.734zM18.984 12q0 2.391-1.383 4.219t-3.586 2.484v-2.016q1.734-0.563 2.859-1.969t1.125-2.719q0-0.328-0.047-0.609l-6.75-6.75v-1.266l5.016-5.016v6.609z"></path>
+            </svg>
           `;
-          document.head.appendChild(style);
-        }
-
-        // Setup colorful balloons floating upward
-        function setupBalloons(container) {
-          const balloonColors = [
-            '#FF5E5B', '#D8A7B1', '#B6E2D3', '#FAE8E0', 
-            '#FFD166', '#06D6A0', '#118AB2', '#EF476F',
-            '#36a3eb', '#ffd700', '#ff7e5f', '#64dfdf'
-          ];
-          
-          // Create initial balloons
-          createBalloonBatch();
-          
-          // Continue creating balloons periodically
-          setInterval(createBalloonBatch, 5000);
-          
-          function createBalloonBatch() {
-            // Create 5 balloons with random positions
-            for (let i = 0; i < 5; i++) {
-              setTimeout(() => {
-                createBalloon();
-              }, i * 500); // Stagger balloon creation
-            }
-          }
-          
-          function createBalloon() {
-            const balloon = document.createElement('div');
-            balloon.className = 'balloon';
-            
-            // Random color
-            const colorIndex = Math.floor(Math.random() * balloonColors.length);
-            balloon.style.backgroundColor = balloonColors[colorIndex];
-            
-            // Random position
-            balloon.style.left = `${5 + Math.random() * 90}%`;
-            
-            // Random animation duration
-            const duration = 15 + Math.random() * 10;
-            balloon.style.animation = `float ${duration}s linear infinite`;
-            
-            // Random size
-            const size = 40 + Math.random() * 30;
-            balloon.style.width = `${size}px`;
-            balloon.style.height = `${size * 1.3}px`;
-            
-            // Add balloon to container
-            container.appendChild(balloon);
-            
-            // Remove balloon after animation completes
-            setTimeout(() => {
-              balloon.remove();
-            }, duration * 1000);
-          }
-        }
-
-        // Fireworks setup
-        function setupFireworks(container) {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-          container.appendChild(canvas);
-          
-          let particles = [];
-          const colors = ['#ffd700', '#36a3eb', '#ff7e5f', '#64dfdf', '#f5f5f5', '#ff4d6d'];
-          
-          class Particle {
-            constructor(x, y, color, velocity, size, decay = 0.02) {
-              this.x = x;
-              this.y = y;
-              this.color = color;
-              this.velocity = velocity;
-              this.size = size;
-              this.decay = decay;
-              this.alpha = 1;
-            }
-            
-            update() {
-              this.velocity.x *= 0.99;
-              this.velocity.y *= 0.99;
-              this.velocity.y += 0.1;
-              this.x += this.velocity.x;
-              this.y += this.velocity.y;
-              this.alpha -= this.decay;
-            }
-            
-            draw() {
-              ctx.save();
-              ctx.globalAlpha = this.alpha;
-              ctx.beginPath();
-              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-              ctx.fillStyle = this.color;
-              ctx.fill();
-              ctx.closePath();
-              ctx.restore();
-            }
-          }
-          
-          function createFirework(x, y) {
-            const particleCount = 150;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            const power = 5 + Math.random() * 3;
-            
-            for (let i = 0; i < particleCount; i++) {
-              const angle = Math.random() * Math.PI * 2;
-              const speed = Math.random() * power;
-              
-              particles.push(
-                new Particle(
-                  x,
-                  y,
-                  color,
-                  {
-                    x: Math.cos(angle) * speed,
-                    y: Math.sin(angle) * speed
-                  },
-                  1 + Math.random() * 2
-                )
-              );
-            }
-          }
-          
-          function launchRandomFirework() {
-            const x = Math.random() * canvas.width;
-            const y = canvas.height * 0.7 * Math.random();
-            createFirework(x, y);
-            
-            const nextLaunch = 200 + Math.random() * 1500;
-            setTimeout(launchRandomFirework, nextLaunch);
-          }
-          
-          function animate() {
-            requestAnimationFrame(animate);
-            
-            ctx.fillStyle = 'rgba(10, 25, 47, 0.2)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach((particle, index) => {
-              if (particle.alpha <= 0) {
-                particles.splice(index, 1);
-                return;
-              }
-              particle.update();
-              particle.draw();
-            });
-          }
-          
-          animate();
-          setTimeout(launchRandomFirework, 1000);
-          
-          // Handle window resize
-          window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-          });
-        }
-
-        // Particles setup
-        function setupParticles(container) {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-          container.appendChild(canvas);
-          
-          const particles = [];
-          const particleCount = 50;
-          
-          class Particle {
-            constructor() {
-              this.x = Math.random() * canvas.width;
-              this.y = Math.random() * canvas.height;
-              this.size = Math.random() * 2 + 0.5;
-              this.speedX = Math.random() * 0.5 - 0.25;
-              this.speedY = Math.random() * 0.5 - 0.25;
-              
-              // Varied particle colors
-              const colors = [
-                `rgba(255, 215, 0, ${Math.random() * 0.5})`,  // Gold
-                `rgba(54, 163, 235, ${Math.random() * 0.5})`, // Blue
-                `rgba(255, 126, 95, ${Math.random() * 0.5})`, // Salmon
-                `rgba(255, 255, 255, ${Math.random() * 0.3})` // White
-              ];
-              this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-            
-            update() {
-              this.x += this.speedX;
-              this.y += this.speedY;
-              
-              if (this.x < 0) this.x = canvas.width;
-              if (this.x > canvas.width) this.x = 0;
-              if (this.y < 0) this.y = canvas.height;
-              if (this.y > canvas.height) this.y = 0;
-            }
-            
-            draw() {
-              ctx.beginPath();
-              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-              ctx.fillStyle = this.color;
-              ctx.fill();
-              ctx.closePath();
-            }
-          }
-          
-          for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-          }
-          
-          function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(particle => {
-              particle.update();
-              particle.draw();
-            });
-          }
-          
-          animate();
-          
-          // Handle window resize
-          window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-          });
+          isMuted = true;
         }
       });
-    </script>
-  </body>
+      
+      // Heart button click event
+      heartButton.addEventListener('click', function() {
+        showSurprise();
+      });
+      
+      // Show surprise view
+      function showSurprise() {
+        // Transition effect
+        greetingView.style.opacity = '0';
+        greetingView.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+          greetingView.style.display = 'none';
+          surpriseView.style.display = 'flex';
+          
+          // Show celebration view with a slight delay
+          setTimeout(() => {
+            surpriseView.style.opacity = '1';
+            
+            // Start music
+            eidMusic.play().catch(error => {
+              console.log('Autoplay prevented. Please interact with the document first.');
+            });
+            
+            // Create stars
+            createStars();
+            
+            // Create sheep
+            createSheep();
+            
+            // Start fireworks
+            startFireworks();
+          }, 100);
+        }, 800);
+      }
+      
+      // Create sheep elements
+      function createSheep() {
+        const sheepCount = 5;
+        
+        for (let i = 0; i < sheepCount; i++) {
+          // Create sheep with delay
+          setTimeout(() => {
+            const sheep = document.createElement('div');
+            sheep.classList.add('sheep');
+            
+            // Set random animation duration (10-20 seconds)
+            const duration = 10 + Math.random() * 10;
+            sheep.style.animationDuration = `${duration}s`;
+            
+            // Set random bottom position (0-60px)
+            const bottomPos = Math.random() * 60;
+            sheep.style.bottom = `${bottomPos}px`;
+            
+            // Create sheep head
+            const sheepHead = document.createElement('div');
+            sheepHead.classList.add('sheep-head');
+            
+            // Create sheep ears
+            const sheepEarLeft = document.createElement('div');
+            sheepEarLeft.classList.add('sheep-ear', 'sheep-ear-left');
+            
+            const sheepEarRight = document.createElement('div');
+            sheepEarRight.classList.add('sheep-ear', 'sheep-ear-right');
+            
+            // Create sheep eyes
+            const sheepEyeLeft = document.createElement('div');
+            sheepEyeLeft.classList.add('sheep-eye', 'sheep-eye-left');
+            
+            const sheepEyeRight = document.createElement('div');
+            sheepEyeRight.classList.add('sheep-eye', 'sheep-eye-right');
+            
+            // Create sheep legs
+            const sheepLegFrontLeft = document.createElement('div');
+            sheepLegFrontLeft.classList.add('sheep-leg', 'sheep-leg-front-left');
+            
+            const sheepLegFrontRight = document.createElement('div');
+            sheepLegFrontRight.classList.add('sheep-leg', 'sheep-leg-front-right');
+            
+            const sheepLegBackLeft = document.createElement('div');
+            sheepLegBackLeft.classList.add('sheep-leg', 'sheep-leg-back-left');
+            
+            const sheepLegBackRight = document.createElement('div');
+            sheepLegBackRight.classList.add('sheep-leg', 'sheep-leg-back-right');
+            
+            // Add eyes to head
+            sheepHead.appendChild(sheepEyeLeft);
+            sheepHead.appendChild(sheepEyeRight);
+            sheepHead.appendChild(sheepEarLeft);
+            sheepHead.appendChild(sheepEarRight);
+            
+            // Add all elements to sheep
+            sheep.appendChild(sheepHead);
+            sheep.appendChild(sheepLegFrontLeft);
+            sheep.appendChild(sheepLegFrontRight);
+            sheep.appendChild(sheepLegBackLeft);
+            sheep.appendChild(sheepLegBackRight);
+            
+            // Add sheep to container
+            sheepContainer.appendChild(sheep);
+            
+            // Remove sheep after animation completes
+            setTimeout(() => {
+              sheep.remove();
+              // Create a new sheep to replace the removed one
+              createSingleSheep();
+            }, duration * 1000);
+          }, i * 2000); // Stagger sheep creation by 2 seconds
+        }
+      }
+      
+      // Create a single sheep (for continuous effect)
+      function createSingleSheep() {
+        const sheep = document.createElement('div');
+        sheep.classList.add('sheep');
+        
+        // Set random animation duration (10-20 seconds)
+        const duration = 10 + Math.random() * 10;
+        sheep.style.animationDuration = `${duration}s`;
+        
+        // Set random bottom position (0-60px)
+        const bottomPos = Math.random() * 60;
+        sheep.style.bottom = `${bottomPos}px`;
+        
+        // Create sheep head
+        const sheepHead = document.createElement('div');
+        sheepHead.classList.add('sheep-head');
+        
+        // Create sheep ears
+        const sheepEarLeft = document.createElement('div');
+        sheepEarLeft.classList.add('sheep-ear', 'sheep-ear-left');
+        
+        const sheepEarRight = document.createElement('div');
+        sheepEarRight.classList.add('sheep-ear', 'sheep-ear-right');
+        
+        // Create sheep eyes
+        const sheepEyeLeft = document.createElement('div');
+        sheepEyeLeft.classList.add('sheep-eye', 'sheep-eye-left');
+        
+        const sheepEyeRight = document.createElement('div');
+        sheepEyeRight.classList.add('sheep-eye', 'sheep-eye-right');
+        
+        // Create sheep legs
+        const sheepLegFrontLeft = document.createElement('div');
+        sheepLegFrontLeft.classList.add('sheep-leg', 'sheep-leg-front-left');
+        
+        const sheepLegFrontRight = document.createElement('div');
+        sheepLegFrontRight.classList.add('sheep-leg', 'sheep-leg-front-right');
+        
+        const sheepLegBackLeft = document.createElement('div');
+        sheepLegBackLeft.classList.add('sheep-leg', 'sheep-leg-back-left');
+        
+        const sheepLegBackRight = document.createElement('div');
+        sheepLegBackRight.classList.add('sheep-leg', 'sheep-leg-back-right');
+        
+        // Add eyes to head
+        sheepHead.appendChild(sheepEyeLeft);
+        sheepHead.appendChild(sheepEyeRight);
+        sheepHead.appendChild(sheepEarLeft);
+        sheepHead.appendChild(sheepEarRight);
+        
+        // Add all elements to sheep
+        sheep.appendChild(sheepHead);
+        sheep.appendChild(sheepLegFrontLeft);
+        sheep.appendChild(sheepLegFrontRight);
+        sheep.appendChild(sheepLegBackLeft);
+        sheep.appendChild(sheepLegBackRight);
+        
+        // Add sheep to container
+        sheepContainer.appendChild(sheep);
+        
+        // Remove sheep after animation completes
+        setTimeout(() => {
+          sheep.remove();
+          // Create a new sheep to replace the removed one
+          createSingleSheep();
+        }, duration * 1000);
+      }
+      
+      // Create star elements
+      function createStars() {
+        const starsContainer = document.querySelector('.stars');
+        const starCount = 50;
+        
+        for (let i = 0; i < starCount; i++) {
+          const star = document.createElement('div');
+          star.classList.add('star');
+          
+          // Random position
+          const x = Math.random() * 100;
+          const y = Math.random() * 100;
+          
+          star.style.left = `${x}%`;
+          star.style.top = `${y}%`;
+          
+          // Random size
+          const size = Math.random() * 3 + 1;
+          star.style.width = `${size}px`;
+          star.style.height = `${size}px`;
+          
+          // Random animation delay
+          const delay = Math.random() * 2;
+          star.style.animationDelay = `${delay}s`;
+          
+          starsContainer.appendChild(star);
+        }
+      }
+      
+      // Create and animate fireworks
+      function startFireworks() {
+        setInterval(createFirework, 1000);
+      }
+      
+      function createFirework() {
+        const firework = document.createElement('div');
+        firework.classList.add('firework');
+        
+        // Random position (horizontal)
+        const x = Math.random() * 100;
+        firework.style.left = `${x}%`;
+        
+        // Random color
+        const colors = [
+          '#f87171', // Red
+          '#fbbf24', // Yellow
+          '#34d399', // Green
+          '#60a5fa', // Blue
+          '#a78bfa', // Purple
+          '#f472b6'  // Pink
+        ];
+        
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        firework.style.backgroundColor = color;
+        
+        fireworksContainer.appendChild(firework);
+        
+        // Explode after reaching top
+        setTimeout(() => {
+          explode(firework, color);
+          firework.remove();
+        }, 1000);
+      }
+      
+      function explode(firework, color) {
+        const particles = 30;
+        const rect = firework.getBoundingClientRect();
+        
+        for (let i = 0; i < particles; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          particle.style.backgroundColor = color;
+          particle.style.top = `${rect.top}px`;
+          particle.style.left = `${rect.left}px`;
+          
+          // Randomize particle direction
+          const angle = Math.random() * Math.PI * 2;
+          const distance = Math.random() * 100 + 50;
+          const x = Math.cos(angle) * distance;
+          const y = Math.sin(angle) * distance;
+          
+          particle.style.setProperty('--x', `${x}px`);
+          particle.style.setProperty('--y', `${y}px`);
+          
+          document.body.appendChild(particle);
+          
+          // Remove particle after animation
+          setTimeout(() => {
+            particle.remove();
+          }, 1000);
+        }
+      }
+    });
+  </script>
+</body>
 </html>
